@@ -13,9 +13,9 @@ import pandas
 page = requests.get('http://announcements.surf.caltech.edu/')
 data = page.text
 soup = BeautifulSoup(data, "lxml")
-table = soup.find_all('table')[0]
+table = soup.find_all('table')[2]
 
-rows = table.find_all('tr')[1:]
+rows = table.find_all('tr')[3:]
 data = {
     'titles' : [],
     'disiplines' : [],
@@ -23,15 +23,20 @@ data = {
     'posted' : []
 }
 for row in rows:
-
+    print("row")
     cols = row.find_all('td')
     for col in cols:
         print("column ", col.text.strip())
-    if cols.size() == 3:
-        data['titles'].append(cols[0].get_text())
-        data['disiplines'].append( cols[1].get_text() )
-        data['mentor'].append(cols[2].get_text())
-        data['posted'].append( cols[3].get_text() )
+    try:
+        data['posted'].append( cols[3].text.strip() )
+        data['titles'].append(cols[0].text.strip())
+        data['disiplines'].append( cols[1].text.strip())
+        data['mentor'].append(cols[2].text.strip())
+        
+    except:
+        print("too short")
+for key in data:
+    print(key, data.get(key))
 surfs = pandas.DataFrame(data)
 surfs.to_csv("mySURFS.csv")
 # # put your own credentials here
