@@ -54,8 +54,6 @@ def getName(phone):
 	return name
 
 def getAllKeywords(phone):
-	cnxn = connectToDatabase()
-	crsr = cnxn.cursor()
 	
 
 	keywords = []
@@ -287,3 +285,12 @@ def deleteOpp(oppID):
 
 	cnxn.commit()
 	cnxn.close()
+
+# Clears database completely.
+def clearOpportunities():
+	lis = df.getAllPhones()
+	for item in lis:
+		ops = df.getNewOpportunites(item)
+		for op in ops:
+			df.deleteOpp(op)
+	
