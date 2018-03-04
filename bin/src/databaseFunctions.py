@@ -246,7 +246,17 @@ def getOppKeyword(oppID):
 
 	return keyword
 
+def getOppTitle(oppID):
+	cnxn = connectToDatabase()
+	crsr = cnxn.cursor()
+	
+	sqlCmd = """SELECT oppTitle FROM opportunities WHERE oppID=?;"""
+	crsr.execute(sqlCmd, oppID)
+	title = crsr.fetchone().oppTitle
+	
+	cnxn.close()
 
+	return title 
 
 # Opportunity Table Modifiers
 
