@@ -11,7 +11,7 @@ driver= '{ODBC Driver 13 for SQL Server}'
 #
 
 # Connects to the SQL database
-def connectToDatabase(server, database, username, password, driver):
+def connectToDatabase():
 	cnxn = pyodbc.connect('DRIVER='+driver+';PORT=1433;SERVER='+server+
 	';PORT=1443;DATABASE='+database+';UID='+username+';PWD='+ password)
 	return cnxn
@@ -22,8 +22,7 @@ def connectToDatabase(server, database, username, password, driver):
 
 # Gets all the phone numbers listed in the database.
 def getAllPhones():
-	cnxn = pyodbc.connect('DRIVER='+driver+';PORT=1433;SERVER='+server+
-	';PORT=1443;DATABASE='+database+';UID='+username+';PWD='+ password)
+	cnxn = connectToDatabase()
 	crsr = cnxn.cursor()
 	
 	numbers = []
@@ -37,11 +36,10 @@ def getAllPhones():
 
 # Gets the name associated with a phone number.
 def getName(phone):
-	cnxn = pyodbc.connect('DRIVER='+driver+';PORT=1433;SERVER='+server+
-	';PORT=1443;DATABASE='+database+';UID='+username+';PWD='+ password)
+	cnxn = connectToDatabase()
 	crsr = cnxn.cursor()
 	
-	numbers = []
+	name = 0
 
 	cnxn.commit()
 	cnxn.close()
@@ -49,8 +47,7 @@ def getName(phone):
 	return name
 
 def getAllKeywords(phone):
-	cnxn = pyodbc.connect('DRIVER='+driver+';PORT=1433;SERVER='+server+
-	';PORT=1443;DATABASE='+database+';UID='+username+';PWD='+ password)
+	cnxn = connectToDatabase()
 	crsr = cnxn.cursor()
 	
 	keywords = []
@@ -62,8 +59,7 @@ def getAllKeywords(phone):
 
 # Gets the first keyword associated with a phone number.
 def getKeyword1(phone):
-	cnxn = pyodbc.connect('DRIVER='+driver+';PORT=1433;SERVER='+server+
-	';PORT=1443;DATABASE='+database+';UID='+username+';PWD='+ password)
+	cnxn = connectToDatabase()
 	crsr = cnxn.cursor()
 
 	cnxn.commit()
@@ -73,8 +69,7 @@ def getKeyword1(phone):
 
 # Gets the second keyword associated with a phone number.
 def getKeyword2(phone):
-	cnxn = pyodbc.connect('DRIVER='+driver+';PORT=1433;SERVER='+server+
-	';PORT=1443;DATABASE='+database+';UID='+username+';PWD='+ password)
+	cnxn = connectToDatabase()
 	crsr = cnxn.cursor()
 
 	cnxn.commit()
@@ -84,8 +79,7 @@ def getKeyword2(phone):
 
 # Gets the third keyword associated with a phone number.
 def getKeyword3(phone):
-	cnxn = pyodbc.connect('DRIVER='+driver+';PORT=1433;SERVER='+server+
-	';PORT=1443;DATABASE='+database+';UID='+username+';PWD='+ password)
+	cnxn = connectToDatabase()
 	crsr = cnxn.cursor()
 
 	cnxn.commit()
@@ -96,8 +90,7 @@ def getKeyword3(phone):
 # Checks whether a given person (identified by phone number) has new 
 # opportunities listed. Returns a boolean.
 def isNewInfo(phone):
-	cnxn = pyodbc.connect('DRIVER='+driver+';PORT=1433;SERVER='+server+
-	';PORT=1443;DATABASE='+database+';UID='+username+';PWD='+ password)
+	cnxn = connectToDatabase()
 	crsr = cnxn.cursor()
 	
 	
@@ -112,15 +105,27 @@ def isNewInfo(phone):
 
 # Adds a person to the table.
 def newPerson(phoneNum, pname, kw1, kw2, kw3):
-	cnxn = pyodbc.connect('DRIVER='+driver+';PORT=1433;SERVER='+server+
-	';PORT=1443;DATABASE='+database+';UID='+username+';PWD='+ password)
+	cnxn = connectToDatabase()
 	crsr = cnxn.cursor()
 	
-	sqlCommand = """INSERT INTO people 
-	(phoneNumber, name, keyword1, keyword2, keyword3, newOpps)
-	VALUES(?, ?, ?, ?, ?, "f");"""
+	#if (getName(phoneNum) =)
+	sqlCommand = """INSERT INTO people(phoneNumber, name, keyword1, 
+	keyword2, keyword3, newOpps)
+	VALUES(?, ?, ?, ?, ?, ?);"""
 
-	crsr.execute(sqlCommand, phoneNum, pname, kw1, kw2, kw3)
+	crsr.execute(sqlCommand, (phoneNum, pname, kw1, kw2, kw3, "f"))
+
+	cnxn.commit()
+	cnxn.close()
+
+# Deletes someone from the table.
+def deletePerson(phoneNum):
+	cnxn = connectToDatabase()
+	crsr = cnxn.cursor()
+
+	sqlCommand = """DELETE FROM people WHERE phoneNumber=?"""
+	crsr.execute(sqlCommand, phoneNum)
+
 
 	cnxn.commit()
 	cnxn.close()
@@ -133,8 +138,7 @@ def newPerson(phoneNum, pname, kw1, kw2, kw3):
 # Gets new opportunities for a certain phone number. Returns array of title 
 # strings, sets opportunites to read.
 def getNewOpportunites(phone):
-	cnxn = pyodbc.connect('DRIVER='+driver+';PORT=1433;SERVER='+server+
-	';PORT=1443;DATABASE='+database+';UID='+username+';PWD='+ password)
+	cnxn = connectToDatabase()
 	crsr = cnxn.cursor()
 
 	titles = []
@@ -146,8 +150,7 @@ def getNewOpportunites(phone):
 
 # Gets the URL of a specific opportunity.
 def getOppURL(oppTitle):
-	cnxn = pyodbc.connect('DRIVER='+driver+';PORT=1433;SERVER='+server+
-	';PORT=1443;DATABASE='+database+';UID='+username+';PWD='+ password)
+	cnxn = connectToDatabase()
 	crsr = cnxn.cursor()
 	
 
@@ -158,8 +161,7 @@ def getOppURL(oppTitle):
 
 # Gets the professor's name for a specific opportunity.
 def getOppProfName(oppTitle):
-	cnxn = pyodbc.connect('DRIVER='+driver+';PORT=1433;SERVER='+server+
-	';PORT=1443;DATABASE='+database+';UID='+username+';PWD='+ password)
+	cnxn = connectToDatabase()
 	crsr = cnxn.cursor()
 	
 
@@ -170,8 +172,7 @@ def getOppProfName(oppTitle):
 
 # Gets the professor's email for a specific opportunity.
 def getOppProfEmail(oppTitle):
-	cnxn = pyodbc.connect('DRIVER='+driver+';PORT=1433;SERVER='+server+
-	';PORT=1443;DATABASE='+database+';UID='+username+';PWD='+ password)
+	cnxn = connectToDatabase()
 	crsr = cnxn.cursor()
 
 	cnxn.commit()
@@ -181,8 +182,7 @@ def getOppProfEmail(oppTitle):
 
 # Gets the person's phone number for a specific opportunity.
 def getOppPhone(oppTitle):
-	cnxn = pyodbc.connect('DRIVER='+driver+';PORT=1433;SERVER='+server+
-	';PORT=1443;DATABASE='+database+';UID='+username+';PWD='+ password)
+	cnxn = connectToDatabase()
 	crsr = cnxn.cursor()
 	
 	numbers = []
@@ -194,8 +194,7 @@ def getOppPhone(oppTitle):
 
 # Gets the trigger keyword for a specific opportunity.
 def getOppKeyword(oppTitle):
-	cnxn = pyodbc.connect('DRIVER='+driver+';PORT=1433;SERVER='+server+
-	';PORT=1443;DATABASE='+database+';UID='+username+';PWD='+ password)
+	cnxn = connectToDatabase()
 	crsr = cnxn.cursor()
 	
 
@@ -210,8 +209,7 @@ def getOppKeyword(oppTitle):
 # Takes a csv file and adds the data to the database, updating the person's
 # new info flag in the process. Returns success/failure boolean.
 def csvToDatabase(file):
-	cnxn = pyodbc.connect('DRIVER='+driver+';PORT=1433;SERVER='+server+
-	';PORT=1443;DATABASE='+database+';UID='+username+';PWD='+ password)
+	cnxn = connectToDatabase()
 	crsr = cnxn.cursor()
 	
 	numbers = []
@@ -222,28 +220,26 @@ def csvToDatabase(file):
 # Takes values and makes a new entry in the table of operations.
 def newOpp(oppTitle, oppURL, phoneNumber, profName, profEmail,
 	triggerKeyword):
-	cnxn = pyodbc.connect('DRIVER='+driver+';PORT=1433;SERVER='+server+
-	';PORT=1443;DATABASE='+database+';UID='+username+';PWD='+ password)
+	cnxn = connectToDatabase()
 	crsr = cnxn.cursor()
 	
-	cnxn = pyodbc.connect('DRIVER='+driver+';PORT=1433;SERVER='+server+
-	';PORT=1443;DATABASE='+database+';UID='+username+';PWD='+ password)
-	crsr = cnxn.cursor()
-	
-	sqlCommand = """INSERT INTO opportunities 
-	(oppTitle, oppURL, phoneNumber, profName, profEmail, triggerKeyword, \
-	isRead)
-	VALUES("{title}", "{url}", "{num}", "{pname}", "{pemail}", "{kw}",
-	"f");"""
+	sqlCommand = """INSERT INTO opportunities(oppTitle, oppURL, phoneNumber,
+	profName, profEmail, triggerKeyword, isRead)
+	VALUES(?, ?, ?, ?, ?, ?, ?);"""
 
-	sqlCommand = sqlCommand.format(title = oppTitle, url=oppURL, 
-		num=phoneNumber, pname=profName, pemail=profEmail, kw=triggerKeyword)
-
-	crsr.execute(sqlCommand)
+	crsr.execute(sqlCommand, (oppTitle, oppURL, phoneNumber, profName,
+		profEmail, triggerKeyword, "f"))
 
 	cnxn.commit()
 	cnxn.close()
 
+def deleteOpp(title):
+	cnxn = connectToDatabase()
+	crsr = cnxn.cursor()
+
+	sqlCommand = """DELETE FROM opportunities WHERE oppTitle=?"""
+	crsr.execute(sqlCommand, title)
+
+
 	cnxn.commit()
 	cnxn.close()
-
