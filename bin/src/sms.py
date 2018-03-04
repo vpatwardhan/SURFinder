@@ -50,15 +50,17 @@ def sendTexts():
     client = Client(account_sid, auth_token)
     nums = databaseFunctions.getAllPhones()
     for num in nums:
-        message += "There is a new oppurtunity that matches your criteria. "
+        
         lst = databaseFunctions.getNewOpportunites(num)
+        message += "There are new oppurtunities that matches your criteria. "
         for ide in lst:
-            message += "It is with Dr. " 
+            message += "The SURF is with Dr. " 
             message += databaseFunctions.getOppProfName(ide)
             message += "The project is "
             message += databaseFunctions.getOppTitle(ide)
-            message += "Further information can be accessed at"
+            message += "Further information can be accessed at "
             message += databaseFunctions.getOppURL(ide)
+            message += '\n'
         client.messages.create(num,
         body=message,
         from_="+12103616715")
