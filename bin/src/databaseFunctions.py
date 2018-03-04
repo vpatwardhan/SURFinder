@@ -149,8 +149,8 @@ def deletePerson(phoneNum):
 	cnxn.close()
 
 def hasUnread(phoneNum, crsr):
-	sqlCmd = """UPDATE people SET newOpps="t" WHERE phoneNumber=?);"""
-	crsr.execute(sqlCmd, phoneNum)
+	sqlCmd = """UPDATE people SET newOpps=? WHERE phoneNumber=?;"""
+	crsr.execute(sqlCmd, 't', phoneNum)
 	return crsr
 
 
@@ -166,14 +166,14 @@ def getNewOpportunites(phone):
 
 	ids = []
 
-	sqlCmd = """SELECT oppID FROM opportunities WHERE phone=?, isRead="f";"""
-	crsr = crsr.execute(sqlCmd, oppID)
+	sqlCmd = """SELECT oppID FROM opportunities WHERE phoneNumber=? AND isRead=?;"""
+	crsr = crsr.execute(sqlCmd, phone, 'f')
 	row = crsr.fetchone()
 	while (row):
-		titles.append(row.oppID)
+		ids.append(row.oppID)
 		row = crsr.fetchone()
-	sqlCmd = """UPDATE opportunities SET isRead="t" WHERE phone=?;"""
-	crsr.execute(sqlCmd, oppID)
+	sqlCmd = """UPDATE opportunities SET isRead=? WHERE phoneNumber=?;"""
+	crsr.execute(sqlCmd, "t", phone)
 
 	cnxn.close()
 
