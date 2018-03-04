@@ -38,7 +38,7 @@ def checkSite():
             data['Mentor'].append(cols[2].text.strip())
             
         except:
-            print("too short")
+            pass
 
     surfs = pandas.DataFrame(data)
     surfs.to_csv("mySURFS.csv")
