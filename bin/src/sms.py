@@ -45,7 +45,7 @@ def checkSite():
 def sendTexts():
     message = ""
 # # put your own credentials here
-    account_sid = "PN0a19970c38e1a1d72c155dd5a38efde3"
+    account_sid = "ACf3099e9dbb87279fbc7fd3af79d78904"
     auth_token = "df0bd7d5a19f92c2f29a67d854d6d08f"
     client = Client(account_sid, auth_token)
     nums = databaseFunctions.getAllPhones()
