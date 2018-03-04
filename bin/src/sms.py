@@ -34,8 +34,8 @@ def checkSite():
         try:
             data['Posted'].append(cols[3].text.strip())
             data['Project Title'].append(cols[0].text.strip())
-            data['Disiplines'].append( cols[1].text.strip())
-            data['Mentor'].append(cols[2].text.strip())
+            data['Disiplines'].append(str(cols[1].text.strip()))
+            data['Mentor'].append(str(cols[2].text.strip()))
             
         except:
             pass
