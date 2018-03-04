@@ -32,11 +32,11 @@ def checkSite():
         # for col in cols:
         #     print("column ", col.text.strip())
         try:
-            
+            data['Posted'].append(cols[3].text.strip())
             data['Project Title'].append(cols[0].text.strip())
             data['Disiplines'].append( cols[1].text.strip())
             data['Mentor'].append(cols[2].text.strip())
-            data['Posted'].append(cols[3].text.strip())
+            
         except:
             print("too short")
 
@@ -52,3 +52,7 @@ def sendTexts():
 #                        body="Tomorrow's forecast in Financial District, \
 #                        San Francisco is Clear",  \
 #                        media_url="https://climacons.herokuapp.com/clear.png")
+def register():
+    pass
+if __name__ == "__main__":
+    checkSite()
