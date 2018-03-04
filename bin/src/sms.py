@@ -44,16 +44,23 @@ def checkSite():
     surfs = pandas.DataFrame(data)
     surfs.to_csv("mySURFS.csv")
 def sendTexts():
+    message = ""
 # # put your own credentials here
     account_sid = "AC5ef872f6da5a21de157d80997a64bd33"
     auth_token = "your_auth_token"
     client = Client(account_sid, auth_token)
     nums = databaseFunctions.getAllPhones()
-    message = ""
-  #client.messages.create(  to="+16518675309",  from_="+14158141829", \
-#                        body="Tomorrow's forecast in Financial District, \
-#                        San Francisco is Clear",  \
-#                        media_url="https://climacons.herokuapp.com/clear.png")
+    for num in nums:
+        message += "There is a new oppurtunity that matches your criteria. "
+        lst = databaseFunctions.getNewOpportunites(num)
+        for ide in lst:
+            message += "It is with Dr. " 
+            message += databaseFunctions.getOppProfName(ide)
+            message += "The project is "
+            message += databaseFunctions.getOppTitle(ide)
+            message += "Further information can be accessed at"
+            message += databaseFunctions.getOppURL(ide)
+    client.messages.create(message)
 def register():
     pass
 if __name__ == "__main__":

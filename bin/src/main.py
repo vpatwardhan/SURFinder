@@ -9,4 +9,4 @@ import sms
 import findOptions
 sms.checkSite()
 findOptions.find()
-sms.sendTexts()
+#sms.sendTexts()
