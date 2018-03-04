@@ -52,3 +52,5 @@ def sendTexts():
 #                        body="Tomorrow's forecast in Financial District, \
 #                        San Francisco is Clear",  \
 #                        media_url="https://climacons.herokuapp.com/clear.png")
+def register():
+    pass
