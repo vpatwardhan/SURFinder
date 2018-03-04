@@ -288,9 +288,9 @@ def deleteOpp(oppID):
 
 # Clears database completely.
 def clearOpportunities():
-	lis = df.getAllPhones()
+	lis = getAllPhones()
 	for item in lis:
-		ops = df.getNewOpportunites(item)
+		ops = getNewOpportunites(item)
 		for op in ops:
-			df.deleteOpp(op)
+			deleteOpp(op)
 	

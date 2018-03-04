@@ -7,7 +7,8 @@
 # new == false
 import sms
 import findOptions
-databaseFunctions.clear()
+import databaseFunctions
+databaseFunctions.clearOpportunities()
 sms.checkSite()
 findOptions.find()
 sms.sendTexts()
