@@ -24,11 +24,16 @@ def connectToDatabase():
 def getAllPhones():
 	cnxn = connectToDatabase()
 	crsr = cnxn.cursor()
-	
+
 	numbers = []
 
-
-	cnxn.commit()
+	sqlCmd = """SELECT phoneNumber FROM people;"""
+	crsr = crsr.execute(sqlCmd)
+	row = crsr.fetchone()
+	while (row):
+		numbers.append(row.phoneNumber)
+		row = crsr.fetchone()
+	
 	cnxn.close()
 
 	return numbers
@@ -39,9 +44,11 @@ def getName(phone):
 	cnxn = connectToDatabase()
 	crsr = cnxn.cursor()
 	
-	name = 0
 
-	cnxn.commit()
+	sqlCmd = """SELECT name FROM people WHERE phoneNumber=?;"""
+	crsr.execute(sqlCmd, phone)
+	name = crsr.fetchone().name
+	
 	cnxn.close()
 
 	return name
@@ -50,10 +57,11 @@ def getAllKeywords(phone):
 	cnxn = connectToDatabase()
 	crsr = cnxn.cursor()
 	
-	keywords = []
 
-	cnxn.commit()
-	cnxn.close()
+	keywords = []
+	keywords.append(getKeyword1(phone))
+	keywords.append(getKeyword2(phone))
+	keywords.append(getKeyword3(phone))
 
 	return keywords
 
@@ -62,7 +70,10 @@ def getKeyword1(phone):
 	cnxn = connectToDatabase()
 	crsr = cnxn.cursor()
 
-	cnxn.commit()
+	sqlCmd = """SELECT keyword1 FROM people WHERE phoneNumber=?;"""
+	crsr.execute(sqlCmd, phone)
+	kw = crsr.fetchone().keyword1
+
 	cnxn.close()
 
 	return kw
@@ -72,7 +83,10 @@ def getKeyword2(phone):
 	cnxn = connectToDatabase()
 	crsr = cnxn.cursor()
 
-	cnxn.commit()
+	sqlCmd = """SELECT keyword2 FROM people WHERE phoneNumber=?;"""
+	crsr.execute(sqlCmd, phone)
+	kw = crsr.fetchone().keyword2
+	
 	cnxn.close()
 
 	return kw
@@ -82,7 +96,10 @@ def getKeyword3(phone):
 	cnxn = connectToDatabase()
 	crsr = cnxn.cursor()
 
-	cnxn.commit()
+	sqlCmd = """SELECT keyword3 FROM people WHERE phoneNumber=?;"""
+	crsr.execute(sqlCmd, phone)
+	kw = crsr.fetchone().keyword3
+	
 	cnxn.close()
 
 	return kw
@@ -92,13 +109,14 @@ def getKeyword3(phone):
 def isNewInfo(phone):
 	cnxn = connectToDatabase()
 	crsr = cnxn.cursor()
-	
-	
 
-	cnxn.commit()
+	sqlCmd = """SELECT newOpps FROM people WHERE phoneNumber=?;"""
+	crsr.execute(sqlCmd, phone)
+	isNew = crsr.fetchone().newOpps
+
 	cnxn.close()
 
-	return newOpps
+	return (isNew == "t")
 
 
 # Person Table Modifiers
@@ -123,12 +141,17 @@ def deletePerson(phoneNum):
 	cnxn = connectToDatabase()
 	crsr = cnxn.cursor()
 
-	sqlCommand = """DELETE FROM people WHERE phoneNumber=?"""
+	sqlCommand = """DELETE FROM people WHERE phoneNumber=?;"""
 	crsr.execute(sqlCommand, phoneNum)
 
 
 	cnxn.commit()
 	cnxn.close()
+
+def hasUnread(phoneNum, crsr):
+	sqlCmd = """UPDATE people SET newOpps="t" WHERE phoneNumber=?);"""
+	crsr.execute(sqlCmd, phoneNum)
+	return crsr
 
 
 ######################################################################
@@ -141,81 +164,91 @@ def getNewOpportunites(phone):
 	cnxn = connectToDatabase()
 	crsr = cnxn.cursor()
 
-	titles = []
+	ids = []
 
-	cnxn.commit()
+	sqlCmd = """SELECT oppID FROM opportunities WHERE phone=?, isRead="f";"""
+	crsr = crsr.execute(sqlCmd, oppID)
+	row = crsr.fetchone()
+	while (row):
+		titles.append(row.oppID)
+		row = crsr.fetchone()
+	sqlCmd = """UPDATE opportunities SET isRead="t" WHERE phone=?;"""
+	crsr.execute(sqlCmd, oppID)
+
 	cnxn.close()
 
-	return titles
+	return ids
 
 # Gets the URL of a specific opportunity.
-def getOppURL(oppTitle):
+def getOppURL(oppID):
 	cnxn = connectToDatabase()
 	crsr = cnxn.cursor()
 	
 
-	cnxn.commit()
+	sqlCmd = """SELECT oppURL FROM opportunities WHERE oppID=?;"""
+	crsr.execute(sqlCmd, oppID)
+	oURL = crsr.fetchone().oppURL
+	
 	cnxn.close()
 
-	return URL
+	return oURL
 
 # Gets the professor's name for a specific opportunity.
-def getOppProfName(oppTitle):
+def getOppProfName(oppID):
 	cnxn = connectToDatabase()
 	crsr = cnxn.cursor()
 	
 
-	cnxn.commit()
+	sqlCmd = """SELECT profName FROM opportunities WHERE oppID=?;"""
+	crsr.execute(sqlCmd, oppID)
+	name = crsr.fetchone().profName
+	
 	cnxn.close()
 
 	return name
 
 # Gets the professor's email for a specific opportunity.
-def getOppProfEmail(oppTitle):
+def getOppProfEmail(oppID):
 	cnxn = connectToDatabase()
 	crsr = cnxn.cursor()
 
-	cnxn.commit()
+	sqlCmd = """SELECT profEmail FROM opportunities WHERE oppID=?;"""
+	crsr.execute(sqlCmd, oppID)
+	email = crsr.fetchone().profEmail
+	
 	cnxn.close()
 
 	return email
 
 # Gets the person's phone number for a specific opportunity.
-def getOppPhone(oppTitle):
+def getOppPhone(oppID):
 	cnxn = connectToDatabase()
 	crsr = cnxn.cursor()
 	
-	numbers = []
-
-	cnxn.commit()
+	sqlCmd = """SELECT phoneNumber FROM opportunities WHERE oppID=?;"""
+	crsr.execute(sqlCmd, oppID)
+	number = crsr.fetchone().phoneNumber
+	
 	cnxn.close()
 
-	return phoneNum
+	return number
 
 # Gets the trigger keyword for a specific opportunity.
-def getOppKeyword(oppTitle):
+def getOppKeyword(oppID):
 	cnxn = connectToDatabase()
 	crsr = cnxn.cursor()
 	
-
-	cnxn.commit()
+	sqlCmd = """SELECT triggerKeyword FROM opportunities WHERE oppID=?;"""
+	crsr.execute(sqlCmd, oppID)
+	keyword = crsr.fetchone().triggerKeyword
+	
 	cnxn.close()
 
 	return keyword
 
 
+
 # Opportunity Table Modifiers
-
-# Takes a csv file and adds the data to the database, updating the person's
-# new info flag in the process. Returns success/failure boolean.
-def csvToDatabase(file):
-	cnxn = connectToDatabase()
-	crsr = cnxn.cursor()
-	
-	numbers = []
-
-	cnxn.commit()
-	cnxn.close()
 
 # Takes values and makes a new entry in the table of operations.
 def newOpp(oppTitle, oppURL, phoneNumber, profName, profEmail,
@@ -229,16 +262,17 @@ def newOpp(oppTitle, oppURL, phoneNumber, profName, profEmail,
 
 	crsr.execute(sqlCommand, (oppTitle, oppURL, phoneNumber, profName,
 		profEmail, triggerKeyword, "f"))
+	crsr = hasUnread(phoneNumber, crsr)
 
 	cnxn.commit()
 	cnxn.close()
 
-def deleteOpp(title):
+def deleteOpp(oppID):
 	cnxn = connectToDatabase()
 	crsr = cnxn.cursor()
 
-	sqlCommand = """DELETE FROM opportunities WHERE oppTitle=?"""
-	crsr.execute(sqlCommand, title)
+	sqlCommand = """DELETE FROM opportunities WHERE oppID=?"""
+	crsr.execute(sqlCommand, oppID)
 
 
 	cnxn.commit()
