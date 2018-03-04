@@ -11,37 +11,39 @@ import requests
 from bs4 import BeautifulSoup
 import pandas
 import os
+def checkSite():
+    if os.path.exists("mySURFS.csv"):
+        os.remove("mySURFS.csv")
+    page = requests.get('http://announcements.surf.caltech.edu/')
+    data = page.text
+    soup = BeautifulSoup(data, "lxml")
+    table = soup.find_all('table')[2]
 
-if os.path.exists("mySURFS.csv"):
-    os.remove("mySURFS.csv")
-page = requests.get('http://announcements.surf.caltech.edu/')
-data = page.text
-soup = BeautifulSoup(data, "lxml")
-table = soup.find_all('table')[2]
+    rows = table.find_all('tr')[7:]
+    data = {
+        'Project Title' : [],
+        'Disiplines' : [],
+        'Mentor' : [],
+        'Posted' : []
+    }
+    for row in rows:
+        print("row")
+        cols = row.find_all('td')
+        # for col in cols:
+        #     print("column ", col.text.strip())
+        try:
+            
+            data['Project Title'].append(cols[0].text.strip())
+            data['Disiplines'].append( cols[1].text.strip())
+            data['Mentor'].append(cols[2].text.strip())
+            data['Posted'].append(cols[3].text.strip())
+        except:
+            print("too short")
 
-rows = table.find_all('tr')[7:]
-data = {
-    'Project Title' : [],
-    'Disiplines' : [],
-    'Mentor' : [],
-    'Posted' : []
-}
-for row in rows:
-    print("row")
-    cols = row.find_all('td')
-    # for col in cols:
-    #     print("column ", col.text.strip())
-    try:
-        
-        data['Project Title'].append(cols[0].text.strip())
-        data['Disiplines'].append( cols[1].text.strip())
-        data['Mentor'].append(cols[2].text.strip())
-        data['Posted'].append(cols[3].text.strip())
-    except:
-        print("too short")
-
-surfs = pandas.DataFrame(data)
-surfs.to_csv("mySURFS.csv")
+    surfs = pandas.DataFrame(data)
+    surfs.to_csv("mySURFS.csv")
+def sendTexts():
+    pass
 # # put your own credentials here
 # account_sid = "AC5ef872f6da5a21de157d80997a64bd33"
 # auth_token = "your_auth_token"

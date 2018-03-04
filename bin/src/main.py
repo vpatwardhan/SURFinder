@@ -5,3 +5,8 @@
 # if new
 # text
 # new == false
+import sms
+import findOptions
+sms.checkSite()
+findOptions.find()
+sms.sendTexts()
