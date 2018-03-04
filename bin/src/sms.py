@@ -28,7 +28,6 @@ def checkSite():
         'Posted' : []
     }
     for row in rows:
-        print("row")
         cols = row.find_all('td')
         # for col in cols:
         #     print("column ", col.text.strip())
@@ -46,8 +45,8 @@ def checkSite():
 def sendTexts():
     message = ""
 # # put your own credentials here
-    account_sid = "AC5ef872f6da5a21de157d80997a64bd33"
-    auth_token = "your_auth_token"
+    account_sid = "PN0a19970c38e1a1d72c155dd5a38efde3"
+    auth_token = "df0bd7d5a19f92c2f29a67d854d6d08f"
     client = Client(account_sid, auth_token)
     nums = databaseFunctions.getAllPhones()
     for num in nums:
