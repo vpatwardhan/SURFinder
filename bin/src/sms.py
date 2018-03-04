@@ -59,7 +59,9 @@ def sendTexts():
             message += databaseFunctions.getOppTitle(ide)
             message += "Further information can be accessed at"
             message += databaseFunctions.getOppURL(ide)
-    client.messages.create(message)
+        client.messages.create(num,
+        body=message,
+        from_="+12103616715")
 def register():
     pass
 if __name__ == "__main__":
