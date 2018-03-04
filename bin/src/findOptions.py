@@ -13,6 +13,6 @@ def find():
             for col in row:
                 for l in lst:
                     if l.lower() in col.lower():
-                        databaseFunctions.newOpp(row[4], "http://announcements.surf.caltech.edu/", num, row[2], "me@caltech.edu", l)
+                        databaseFunctions.newOpp(row[4], "http://announcements.surf.caltech.edu", num, row[2], "me@caltech.edu", l)
                         indices.append(index)
         index += 1

@@ -56,9 +56,9 @@ def sendTexts():
         for ide in lst:
             message += "The SURF is with Dr. " 
             message += databaseFunctions.getOppProfName(ide)
-            message += "The project is "
+            message += ". The project is "
             message += databaseFunctions.getOppTitle(ide)
-            message += "Further information can be accessed at "
+            message += ". Further information can be accessed at "
             message += databaseFunctions.getOppURL(ide)
             message += '\n'
         client.messages.create(num,
